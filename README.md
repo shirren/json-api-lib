@@ -78,7 +78,7 @@ that looks like this:
 
 #### Example Project
 
-There is an [example project](https://github.com/shirren/servant-store) illustrating how the library can be used in the context of a web server.
+There is an [example project](https://github.com/shirren/servant-store) illustrating how the library can be used in the context of a web application.
 
 #### Hackage
 
