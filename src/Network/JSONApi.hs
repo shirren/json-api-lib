@@ -7,8 +7,11 @@ module Network.JSONApi
 , D.ErrorDocument (..)
 , D.Included
 , E.Error (..)
+, R.PageNum (..)
+, R.PageSize (..)
 , R.Relationship
 , R.Resource (..)
+, R.ResourceCount (..)
 , R.Relationships
 , R.ResourcefulEntity (..)
 , I.HasIdentifier (..)

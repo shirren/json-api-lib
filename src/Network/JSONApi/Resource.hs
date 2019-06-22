@@ -4,7 +4,10 @@ Module representing a JSON-API resource object.
 Specification: <http://jsonapi.org/format/#document-resource-objects>
 -}
 module Network.JSONApi.Resource
-( Resource (..)
+( PageNum (..)
+, PageSize (..)
+, Resource (..)
+, ResourceCount (..)
 , Relationships
 , ResourcefulEntity (..)
 , Relationship
@@ -20,8 +23,8 @@ import           Data.Aeson (ToJSON, FromJSON, (.=), (.:), (.:?))
 import qualified Data.Aeson as AE
 import           Data.Aeson.Types (fieldLabelModifier)
 import           Data.Map (Map)
-import           Data.Maybe (fromMaybe)
 import qualified Data.Map as Map
+import           Data.Maybe (fromMaybe)
 import           Data.Text (Text, pack)
 
 import           GHC.Generics hiding (Meta)
@@ -142,25 +145,41 @@ makeLenses ''Resource
 Helper function to build relative links for a single resource of type ResourceEntity
 -}
 showLink :: ResourcefulEntity e => e -> Links
-showLink resource = mkLinks [ ("self", selfLink) ]
+showLink resource = mkLinks [ ("self", buildLink) ]
   where
-    selfLink = "/" <> resourceType resource <> "/" <> resourceIdentifier resource
+    buildLink = "/" <> resourceType resource <> "/" <> resourceIdentifier resource
+
+{- |
+We can specify limits on the number of rows we would like back from the database
+-}
+newtype PageSize = PageSize {
+  getPageSize :: Int
+} deriving Show
+
+newtype PageNum = PageNum {
+  getPageNum :: Int
+} deriving Show
+
+newtype ResourceCount = ResourceCount {
+  getResourceCount :: Int
+} deriving Show
 
 {- |
 Helper function to beuild relative links for a collection of resources of type ResourceEntity.
 
 This helper function assumes that the first page is always page 0.
 -}
-indexLinks :: ResourcefulEntity e => e -> Maybe Int -> Maybe Int -> Maybe Int -> Links
-indexLinks resource mPageSize mPageNo documentCount = mkLinks [
-     ("self", genLink pageNo)
+indexLinks :: ResourcefulEntity e => e -> Maybe Text -> PageSize -> PageNum -> ResourceCount -> Links
+indexLinks resource baseUrl pageSize pageNum resourceCount = mkLinks [
+     ("self", genLink pgNum)
     ,("first", genLink (0 :: Int))
-    ,("prev", genLink (if pageNo - 1 < 0 then 0 else pageNo - 1))
-    ,("next", genLink (pageNo + 1))
-    ,("last", genLink ((fromMaybe 0 documentCount `quot` pageSize) - 1 ))]
+    ,("prev", genLink (if pgNum - 1 < 0 then 0 else pgNum - 1))
+    ,("next", genLink (pgNum + 1))
+    ,("last", genLink ((resCount `quot` pgSize) - 1))]
   where
-    pageSize = fromMaybe 10 mPageSize
-    pageNo = fromMaybe 0 mPageNo
-    genLink no = "/" <> resourceType resource <> "?" <>
+    pgNum = if getPageNum pageNum < 0 then 0 else getPageNum pageNum
+    pgSize = if getPageSize pageSize <= 0 then 1 else getPageSize pageSize
+    resCount = if getResourceCount resourceCount < 0 then 0 else getResourceCount resourceCount
+    genLink no = fromMaybe "" baseUrl <> "/" <> resourceType resource <> "?" <>
                 encodeText "page[number]" <> "=" <> (pack . show) no <>
-                "&" <> encodeText "page[size]" <> "=" <> (pack . show) pageSize
+                "&" <> encodeText "page[size]" <> "=" <> (pack . show) pgSize

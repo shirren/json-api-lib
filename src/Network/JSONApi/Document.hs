@@ -84,10 +84,6 @@ See 'mkIncludedResource' for creating 'Included' types.
 newtype Included = Included [Value]
   deriving (Show)
 
--- instance Monoid Included where
---   mempty = Included []
---   mappend (Included as) (Included bs) = Included (as <> bs)
-
 {- |
 Constructor function for the Document data type.
 
