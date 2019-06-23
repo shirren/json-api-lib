@@ -30,7 +30,7 @@ spec = do
 
   describe "Index links" $ do
     it "should always start at page 0" $ do
-      let links = indexLinks testObject Nothing (PageSize 10) (PageNum 1) (ResourceCount 20)
+      let links = indexLinks "/TestObject" $ Pagination (PageSize 10) (PageNum 1) (ResourceCount 20)
       links `shouldBe` mkLinks [
           ("first","/TestObject?page%5Bnumber%5D=0&page%5Bsize%5D=10")
         , ("last","/TestObject?page%5Bnumber%5D=1&page%5Bsize%5D=10")
@@ -39,7 +39,7 @@ spec = do
         , ("self","/TestObject?page%5Bnumber%5D=1&page%5Bsize%5D=10")]
 
     it "should never have a negative prev page" $ do
-      let links = indexLinks testObject Nothing (PageSize 10) (PageNum 0) (ResourceCount 20)
+      let links = indexLinks "/TestObject" $ Pagination (PageSize 10) (PageNum 0) (ResourceCount 20)
       links `shouldBe` mkLinks [
           ("first","/TestObject?page%5Bnumber%5D=0&page%5Bsize%5D=10")
         , ("last","/TestObject?page%5Bnumber%5D=1&page%5Bsize%5D=10")
@@ -48,7 +48,7 @@ spec = do
         , ("self","/TestObject?page%5Bnumber%5D=0&page%5Bsize%5D=10")]
 
     it "should handle a page size of 0" $ do
-      let links = indexLinks testObject Nothing (PageSize 0) (PageNum 0) (ResourceCount 2)
+      let links = indexLinks "/TestObject" $ Pagination (PageSize 0) (PageNum 0) (ResourceCount 2)
       links `shouldBe` mkLinks [
           ("first","/TestObject?page%5Bnumber%5D=0&page%5Bsize%5D=1")
         , ("last","/TestObject?page%5Bnumber%5D=1&page%5Bsize%5D=1")
@@ -57,7 +57,7 @@ spec = do
         , ("self","/TestObject?page%5Bnumber%5D=0&page%5Bsize%5D=1")]
 
     it "should handle a negative page num" $ do
-      let links = indexLinks testObject Nothing (PageSize 0) (PageNum $ -1) (ResourceCount 2)
+      let links = indexLinks "/TestObject" $ Pagination (PageSize 0) (PageNum $ -1) (ResourceCount 2)
       links `shouldBe` mkLinks [
           ("first","/TestObject?page%5Bnumber%5D=0&page%5Bsize%5D=1")
         , ("last","/TestObject?page%5Bnumber%5D=1&page%5Bsize%5D=1")
@@ -66,7 +66,7 @@ spec = do
         , ("self","/TestObject?page%5Bnumber%5D=0&page%5Bsize%5D=1")]
 
     it "should handle a negative resource count" $ do
-      let links = indexLinks testObject Nothing (PageSize 1) (PageNum 0) (ResourceCount $ -1)
+      let links = indexLinks "/TestObject" $ Pagination (PageSize 1) (PageNum 0) (ResourceCount $ -1)
       links `shouldBe` mkLinks [
           ("first","/TestObject?page%5Bnumber%5D=0&page%5Bsize%5D=1")
         , ("last","/TestObject?page%5Bnumber%5D=-1&page%5Bsize%5D=1")
@@ -75,7 +75,7 @@ spec = do
         , ("self","/TestObject?page%5Bnumber%5D=0&page%5Bsize%5D=1")]
 
     it "should handle nested resource paths" $ do
-      let links = indexLinks testObject (Just "/ParentObject/1") (PageSize 10) (PageNum 1) (ResourceCount 20)
+      let links = indexLinks "/ParentObject/1/TestObject" $ Pagination (PageSize 10) (PageNum 1) (ResourceCount 20)
       links `shouldBe` mkLinks [
           ("first","/ParentObject/1/TestObject?page%5Bnumber%5D=0&page%5Bsize%5D=10")
         , ("last","/ParentObject/1/TestObject?page%5Bnumber%5D=1&page%5Bsize%5D=10")
@@ -119,7 +119,7 @@ myResourceLinks =
           ]
 
 myResourceMetaData :: Meta
-myResourceMetaData = mkMeta (Pagination (Just 1) (Just 1) (Just 14))
+myResourceMetaData = mkMeta (Pagination (PageSize 1) (PageNum 1) (ResourceCount 14))
 
 testObject :: TestObject
 testObject = TestObject 1 "Fred Armisen" 49 "Pizza"

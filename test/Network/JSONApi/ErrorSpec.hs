@@ -14,7 +14,7 @@ main = hspec spec
 
 spec :: Spec
 spec = do
-  describe "Defaults" $ do
+  describe "Defaults" $
     it "provides defaults" $
       let expectedDefault = Error
             { id     = Nothing

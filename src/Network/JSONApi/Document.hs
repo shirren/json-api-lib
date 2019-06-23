@@ -8,6 +8,8 @@ module Network.JSONApi.Document
   , Included
   , mkDocument
   , mkDocument'
+  , mkSimpleDocument
+  , mkSimpleDocument'
   , singleton
   , list
   , mkCompoundDocument
@@ -108,6 +110,18 @@ mkDocument' res links meta =
     , _meta = meta
     , _included = []
     }
+
+{- |
+A function for document which do not require links or Meta data.
+-}
+mkSimpleDocument :: ResourcefulEntity a => [a] -> Document a
+mkSimpleDocument res = mkDocument res Nothing Nothing
+
+{- |
+A function for document which do not require links or Meta data.
+-}
+mkSimpleDocument' :: ResourceData a -> Document a
+mkSimpleDocument' res = mkDocument' res Nothing Nothing
 
 {- |
 Constructor function for the Document data type.

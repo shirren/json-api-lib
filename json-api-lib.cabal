@@ -1,7 +1,7 @@
 cabal-version:       2.0
 
 name:                json-api-lib
-version:             0.1.1.0
+version:             0.1.1.1
 homepage:            https://github.com/shirren/json-api-lib
 bug-reports:         https://github.com/shirren/json-api-lib/issues
 license:             MIT
@@ -48,6 +48,7 @@ library
     Network.JSONApi.Identifier
     Network.JSONApi.Meta
     Network.JSONApi.Link
+    Network.JSONApi.Pagination
     Network.JSONApi.Resource
 
   other-modules:
@@ -99,6 +100,7 @@ test-suite json-api-lib-test
     Network.JSONApi.DocumentSpec
     Network.JSONApi.IdentifierSpec
     Network.JSONApi.MetaSpec
+    Network.JSONApi.PaginationSpec
     Network.JSONApi.ResourceSpec
     TestHelpers
 
