@@ -10,6 +10,7 @@ module Network.JSONApi.Link
 , mkLinks
 ) where
 
+import           Control.DeepSeq (NFData)
 import           Data.Aeson (ToJSON, FromJSON)
 import           Data.Map (Map)
 import qualified Data.Map as Map
@@ -34,6 +35,8 @@ Specification: <http://jsonapi.org/format/#document-links>
 -}
 newtype Links = Links (Map Rel Href)
   deriving (Show, Eq, Ord, ToJSON, FromJSON, G.Generic)
+
+instance NFData Links
 
 type Rel = Text
 type Href = Text
