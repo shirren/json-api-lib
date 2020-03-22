@@ -5,7 +5,11 @@ module Network.JSONApi.Pagination (
   , ResourceCount (..)
 ) where
 
+import Control.DeepSeq (NFData)
+
 import Data.Aeson ((.=), ToJSON, object, toJSON)
+
+import qualified GHC.Generics as G
 
 import Network.JSONApi.Meta (MetaObject (..))
 
@@ -17,7 +21,7 @@ data Pagination = Pagination {
     getPaginationPageSize :: PageSize
   , getPaginationPageNum :: PageNum
   , getPaginationResourceCount :: ResourceCount
-}
+} deriving (G.Generic)
 
 instance ToJSON Pagination where
   toJSON (Pagination (PageSize size) (PageNum num) (ResourceCount count)) =
@@ -26,6 +30,8 @@ instance ToJSON Pagination where
       , "currentPage" .= num
       , "totalDocuments" .= count
       ]
+
+instance NFData Pagination
 
 {- |
 Pagination can be used as a meta object if required in addition to the links generated
@@ -39,12 +45,18 @@ We can specify limits on the number of rows we would like back from the database
 -}
 newtype PageSize = PageSize {
   getPageSize :: Int
-} deriving Show
+} deriving (G.Generic, Show)
+
+instance NFData PageSize
 
 newtype PageNum = PageNum {
   getPageNum :: Int
-} deriving Show
+} deriving (G.Generic, Show)
+
+instance NFData PageNum
 
 newtype ResourceCount = ResourceCount {
   getResourceCount :: Int
-} deriving Show
+} deriving (G.Generic, Show)
+
+instance NFData ResourceCount

@@ -11,11 +11,14 @@ module Network.JSONApi.Identifier
 , metadata
 ) where
 
+import           Control.DeepSeq (NFData)
 import           Control.Lens.TH
 
 import           Data.Aeson (ToJSON, FromJSON, (.=), (.:), (.:?))
 import qualified Data.Aeson as AE
 import           Data.Text (Text)
+
+import qualified GHC.Generics as G
 
 import           Network.JSONApi.Meta (Meta)
 
@@ -33,7 +36,7 @@ data Identifier = Identifier
   { _ident :: Text
   , _datatype :: Text
   , _metadata :: Maybe Meta
-  } deriving (Show, Eq)
+  } deriving (Show, Eq, G.Generic)
 
 instance ToJSON Identifier where
   toJSON (Identifier resId resType resMetaData) =
@@ -49,6 +52,7 @@ instance FromJSON Identifier where
     meta  <- v .:? "meta"
     return $ Identifier id typ meta
 
+instance NFData Identifier
 
 {- |
 Typeclass indicating how to access an 'Identifier' for
