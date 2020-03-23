@@ -14,6 +14,8 @@ module Network.JSONApi.Resource
 , showLink
 ) where
 
+import           Control.DeepSeq (NFData)
+
 import           Control.Lens.TH
 
 import           Data.Aeson (ToJSON, FromJSON, (.=), (.:), (.:?))
@@ -70,6 +72,8 @@ instance (FromJSON a) => FromJSON (Resource a) where
 instance HasIdentifier (Resource a) where
   identifier = getIdentifier
 
+instance (NFData a) => NFData (Resource a)
+
 {- |
 A typeclass for decorating an entity with JSON API properties
 -}
@@ -112,11 +116,14 @@ instance FromJSON Relationship where
   parseJSON = AE.genericParseJSON
     AE.defaultOptions { fieldLabelModifier = drop 1 }
 
+instance NFData Relationship
+
 newtype Relationships = Relationships (Map Text Relationship)
   deriving (Show, Eq, Generic)
 
 instance ToJSON Relationships
 instance FromJSON Relationships
+instance NFData Relationships
 
 mkRelationships :: Relationship -> Relationships
 mkRelationships rel =

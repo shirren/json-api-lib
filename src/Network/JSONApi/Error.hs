@@ -10,6 +10,7 @@ module Network.JSONApi.Error
 ( Error (..)
 ) where
 
+import Control.DeepSeq (NFData)
 import Data.Aeson (ToJSON, FromJSON)
 import Data.Default
 import Data.Text
@@ -37,6 +38,7 @@ data Error a =
 
 instance ToJSON a   => ToJSON (Error a)
 instance FromJSON a => FromJSON (Error a)
+instance NFData a   => NFData (Error a)
 
 instance Default (Error a) where
   def = Error

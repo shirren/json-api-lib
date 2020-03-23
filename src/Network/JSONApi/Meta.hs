@@ -9,6 +9,7 @@ module Network.JSONApi.Meta
 , mkMeta
 )where
 
+import           Control.DeepSeq (NFData)
 import           Data.Aeson (ToJSON, FromJSON, Object, toJSON)
 import           Data.HashMap.Strict as HM
 import           Data.Text (Text)
@@ -41,6 +42,7 @@ newtype Meta = Meta Object
 
 instance ToJSON Meta
 instance FromJSON Meta
+instance NFData Meta
 
 {- |
 Convienience class for constructing a Meta type

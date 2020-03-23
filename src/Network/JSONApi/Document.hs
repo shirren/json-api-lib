@@ -17,6 +17,7 @@ module Network.JSONApi.Document
   , mkIncludedResource
   ) where
 
+import Control.DeepSeq (NFData)
 import Control.Monad (mzero)
 import Data.Aeson
   ( ToJSON
@@ -74,6 +75,8 @@ instance (FromJSON a) => FromJSON (Document a) where
     i <- v .: "included"
     return (Document d l m i)
 
+instance (NFData a) => NFData (Document a)
+
 {- |
 The 'Included' type is an abstraction used to constrain the @included@
 section of the Document to JSON serializable Resource objects while
@@ -84,7 +87,9 @@ constrain the 'Value' to a heterogeneous list of Resource types.
 See 'mkIncludedResource' for creating 'Included' types.
 -}
 newtype Included = Included [Value]
-  deriving (Show)
+  deriving (G.Generic, Show)
+
+instance NFData Included
 
 {- |
 Constructor function for the Document data type.
@@ -191,6 +196,8 @@ instance (FromJSON a) => FromJSON (ResourceData a) where
   parseJSON (AE.Array v)  = List <$> AE.parseJSON (AE.Array v)
   parseJSON _             = mzero
 
+instance (NFData a) => NFData (ResourceData a)
+
 {- |
 The 'ErrorDocument' type represents the alternative form of the top-level
 JSON-API requirement.
@@ -219,3 +226,5 @@ instance (FromJSON a) => FromJSON (ErrorDocument a) where
       <$> v .: "error"
       <*> v .:? "links"
       <*> v .:? "meta"
+
+instance (NFData a) => NFData (ErrorDocument a)
