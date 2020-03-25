@@ -43,10 +43,10 @@ let userResource = UserResource {
     resourceId = "8b384d842a8b33fdcaf6207ad45b62c9"
   , emailAddress = "john@doe.com"
   , firstName = "John"
-  , middleName = Nothing
+  , middleName = "Adrian"
   , lastName = "Doe"
   }
-JSONApi.mkDocument [userResource] Nothing Nothing
+JSONApi.mkDocument userResource Nothing Nothing
 ```
 
 When delivered as a response from a web server, for example, we get a payload
@@ -69,6 +69,71 @@ that looks like this:
       "links": {
           "self": "/users/8b384d842a8b33fdcaf6207ad45b62c9"
       }
+  },
+  "meta": null,
+  "included": [],
+  "links": null
+}
+```
+
+Now suppose you want to send back a collection of resources (e.g: User resources).
+
+```Haskell
+-- Import the JSON API
+import qualified Network.JSONApi as JSONApi
+-- Builds the Document which will be serialized as our
+-- web server's response payload
+let userResource1 = UserResource {
+    resourceId = "8b384d842a8b33fdcaf6207ad45b62c9"
+  , emailAddress = "john@doe.com"
+  , firstName = "John"
+  , middleName = Nothing
+  , lastName = "Doe"
+  }
+let userResource2 = UserResource {
+    resourceId = "8b384d842a8b33fdcaf6207ad45b62c9"
+  , emailAddress = "jane@doe.com"
+  , firstName = "Jane"
+  , middleName = Nothing
+  , lastName = "Doe"
+  }
+JSONApi.mkDocuments [userResource1, userResource2] Nothing Nothing
+```
+
+When delivered as a response from a web server, for example, we get a payload
+that looks like this:
+
+```JSON
+{
+  "data": [{
+      "attributes": {
+          "resourceId": "8b384d842a8b33fdcaf6207ad45b62c9",
+          "middleName": "Adrian",
+          "lastName": "Doe",
+          "emailAddress": "john@doe.com",
+          "firstName": "John"
+      },
+      "relationships": null,
+      "id": "8b384d842a8b33fdcaf6207ad45b62c9",
+      "meta": null,
+      "type": "users",
+      "links": {
+          "self": "/users/8b384d842a8b33fdcaf6207ad45b62c9"
+      }},{
+      "attributes": {
+          "resourceId": "8b384d842a8b33fdcaf6207ad45b62c8",
+          "lastName": "Doe",
+          "emailAddress": "jane@doe.com",
+          "firstName": "Jane"
+      },
+      "relationships": null,
+      "id": "8b384d842a8b33fdcaf6207ad45b62c8",
+      "meta": null,
+      "type": "users",
+      "links": {
+          "self": "/users/8b384d842a8b33fdcaf6207ad45b62c8"
+      }
+    }]
   },
   "meta": null,
   "included": [],

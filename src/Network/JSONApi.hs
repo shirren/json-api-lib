@@ -26,13 +26,16 @@ module Network.JSONApi
 , R.mkRelationships
 , R.showLink
 , D.mkDocument
+, D.mkDocuments
 , D.mkDocument'
 , D.singleton
 , D.list
 , D.mkCompoundDocument
+, D.mkCompoundDocuments
 , D.mkCompoundDocument'
 , D.mkIncludedResource
 , D.mkSimpleDocument
+, D.mkSimpleDocuments
 , D.mkSimpleDocument'
 , M.mkMeta
 ) where
