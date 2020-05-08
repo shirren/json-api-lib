@@ -21,7 +21,7 @@ data Pagination = Pagination {
     getPaginationPageSize :: PageSize
   , getPaginationPageNum :: PageNum
   , getPaginationResourceCount :: ResourceCount
-} deriving (G.Generic)
+} deriving (Eq, G.Generic)
 
 instance ToJSON Pagination where
   toJSON (Pagination (PageSize size) (PageNum num) (ResourceCount count)) =
@@ -45,18 +45,18 @@ We can specify limits on the number of rows we would like back from the database
 -}
 newtype PageSize = PageSize {
   getPageSize :: Int
-} deriving (G.Generic, Show)
+} deriving (Eq, G.Generic, Show)
 
 instance NFData PageSize
 
 newtype PageNum = PageNum {
   getPageNum :: Int
-} deriving (G.Generic, Show)
+} deriving (Eq, G.Generic, Show)
 
 instance NFData PageNum
 
 newtype ResourceCount = ResourceCount {
   getResourceCount :: Int
-} deriving (G.Generic, Show)
+} deriving (Eq, G.Generic, Show)
 
 instance NFData ResourceCount
