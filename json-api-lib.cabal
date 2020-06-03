@@ -10,7 +10,7 @@ author:              Todd Mohney, Shirren Premaratne
 copyright:           2016 Todd Mohney
 category:            Network
 build-type:          Simple
-maintainer:          Shirren Premaratne
+maintainer:          Shirren Premaratne, George Wilson
 tested-with:         GHC == 8.4.3
 extra-source-files:  CHANGELOG.md
 synopsis:            Utilities for generating JSON-API payloads
