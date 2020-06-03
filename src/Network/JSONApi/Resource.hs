@@ -77,7 +77,7 @@ instance (NFData a) => NFData (Resource a)
 {- |
 A typeclass for decorating an entity with JSON API properties
 -}
-class (ToJSON a, FromJSON a) => ResourcefulEntity a where
+class ResourcefulEntity a where
   resourceIdentifier :: a -> Text
   resourceType :: a -> Text
   resourceLinks :: a -> Maybe Links
