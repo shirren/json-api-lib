@@ -1,7 +1,7 @@
 cabal-version:       2.0
 
 name:                json-api-lib
-version:             0.2.1.0
+version:             0.3.0.0
 homepage:            https://github.com/shirren/json-api-lib
 bug-reports:         https://github.com/shirren/json-api-lib/issues
 license:             MIT
@@ -10,8 +10,12 @@ author:              Todd Mohney, Shirren Premaratne
 copyright:           2016 Todd Mohney
 category:            Network
 build-type:          Simple
-maintainer:          Shirren Premaratne
-tested-with:         GHC == 8.4.3
+maintainer:          Shirren Premaratne, George Wilson
+extra-source-files:  CHANGELOG.md
+tested-with:         GHC == 8.4.4
+                      || == 8.6.5
+                      || == 8.8.3
+                      || == 8.10.1
 synopsis:            Utilities for generating JSON-API payloads
 description:
   Provides utilities for deriving JSON payloads conformant to the json-api
@@ -22,7 +26,7 @@ source-repository head
   location: https://github.com/shirren/json-api-lib.git
 
 library
-  build-depends: aeson         > 1.4 && < 1.5
+  build-depends: aeson         > 1.4 && < 1.6
                , base          >= 4.11 && < 5
                , containers    >= 0.6.1 && < 0.7
                , data-default  >= 0.7.1 && < 0.8
@@ -63,7 +67,7 @@ library
   hs-source-dirs: src
 
 test-suite json-api-lib-test
-  build-depends: aeson         > 1.4 && < 1.5
+  build-depends: aeson         > 1.4 && < 1.6
                , aeson-pretty  > 0.8 && < 0.9
                , base          >= 4.11 && < 5
                , bytestring    >= 0.10.8 && < 0.11
