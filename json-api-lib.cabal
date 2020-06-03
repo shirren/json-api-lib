@@ -11,8 +11,11 @@ copyright:           2016 Todd Mohney
 category:            Network
 build-type:          Simple
 maintainer:          Shirren Premaratne, George Wilson
-tested-with:         GHC == 8.4.3
 extra-source-files:  CHANGELOG.md
+tested-with:         GHC == 8.4.4
+                      || == 8.6.5
+                      || == 8.8.3
+                      || == 8.10.1
 synopsis:            Utilities for generating JSON-API payloads
 description:
   Provides utilities for deriving JSON payloads conformant to the json-api
